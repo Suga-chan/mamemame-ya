@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>豆豆や | コーヒーサブスク</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- 日本語用のフォント（なくても動きます） -->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ===== 全体の基本設定 ===== */
+    :root {
+      --main-color: #f08b2e;
+      --accent-color: #f5f1e6;
+      --dark-bg: #111827;
+      --text-main: #111827;
+      --text-sub: #6b7280;
+      --radius-lg: 12px;
+      --shadow-soft: 0 10px 25px rgba(15, 23, 42, 0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Noto Sans JP", system-ui, -apple-system, BlinkMacSystemFont,
+        "Segoe UI", sans-serif;
+      color: var(--text-main);
+      line-height: 1.6;
+      background-color: #f9fafb;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* ===== レイアウト用の共通クラス ===== */
+    .container {
+      width: 100%;
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 16px;
+    }
+
+    .section {
+      padding: 72px 0;
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 40px;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 10px 24px;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 500;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: background-color 0.2s ease, color 0.2s ease, transform 0.1s ease;
+      white-space: nowrap;
+    }
+
+    .btn-primary {
+      background-color: var(--main-color);
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      background-color: #dd7b20;
+    }
+
+    .btn-outline {
+      background-color: rgba(255, 255, 255, 0.9);
+      border-color: rgba(255, 255, 255, 0.7);
+      color: #111827;
+    }
+
+    .btn-outline:hover {
+      background-color: #fff;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 999px;
+      background-color: var(--accent-color);
+      font-size: 18px;
+      margin-bottom: 8px;
+    }
+
+    /* ===== ヘッダー ===== */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 50;
+      background-color: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+    }
+
+    .logo {
+      font-weight: 700;
+      font-size: 18px;
+      letter-spacing: 0.12em;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 20px;
+      font-size: 14px;
+    }
+
+    nav li a {
+      color: #4b5563;
+    }
+
+    nav li a:hover {
+      color: #111827;
+    }
+
+    .header-cta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    /* ===== ヒーロー（最上部の大きな画像） ===== */
+    .hero {
+      margin-top: 64px; /* 固定ヘッダー分の余白 */
+      height: 480px;
+      background-image:
+        linear-gradient(to bottom, rgba(0,0,0,0.55), rgba(0,0,0,0.7)),
+        /* ここを好きな画像URLに変えてください */
+        url("https://images.pexels.com/photos/585750/pexels-photo-585750.jpeg?auto=compress&cs=tinysrgb&w=1600");
+      background-size: cover;
+      background-position: center;
+      color: #fff;
+      display: flex;
+      align-items: center;
+    }
+
+    .hero-inner {
+      max-width: 640px;
+    }
+
+    .hero-title {
+      font-size: 32px;
+      font-weight: 700;
+      line-height: 1.4;
+      margin-bottom: 24px;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    /* ===== 「大切にしていること」セクション ===== */
+    .values-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.1fr);
+      gap: 40px;
+      align-items: center;
+    }
+
+    .values-img-wrapper {
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .values-items {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .values-item-title {
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .values-item-text {
+      font-size: 14px;
+      color: var(--text-sub);
+    }
+
+    /* ===== サブスク特徴セクション ===== */
+    .feature-bg {
+      background-color: #fdf7ec;
+    }
+
+    .feature-subtitle {
+      text-align: center;
+      font-size: 12px;
+      color: var(--text-sub);
+      margin-top: -24px;
+      margin-bottom: 32px;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 20px;
+    }
+
+    .feature-card {
+      background-color: #fff;
+      padding: 24px 20px;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-soft);
+      font-size: 14px;
+    }
+
+    .feature-card-title {
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    /* ===== コーヒーラインナップ ===== */
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 24px;
+    }
+
+    .product-card {
+      background-color: #fff;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-soft);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .product-img {
+      height: 180px;
+      object-fit: cover;
+    }
+
+    .product-body {
+      padding: 18px 18px 16px;
+      font-size: 14px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .product-title {
+      font-weight: 600;
+    }
+
+    .product-price {
+      font-size: 13px;
+      color: var(--main-color);
+      margin-top: auto;
+    }
+
+    .product-footer {
+      padding: 12px 18px 18px;
+    }
+
+    .product-footer .btn {
+      width: 100%;
+      text-align: center;
+    }
+
+    /* ===== お客様の声 ===== */
+    .voices-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px;
+      font-size: 13px;
+    }
+
+    .voice-card {
+      background-color: #fff;
+      padding: 18px 16px;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .voice-stars {
+      font-size: 13px;
+      color: #f59e0b;
+      margin-bottom: 4px;
+    }
+
+    .voice-name {
+      font-size: 12px;
+      color: var(--text-sub);
+      margin-top: 6px;
+    }
+
+    .voice-date {
+      font-size: 11px;
+      color: #9ca3af;
+    }
+
+    /* ===== 会社紹介 ===== */
+    .company-card {
+      max-width: 720px;
+      margin: 0 auto;
+      background-color: #fff;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-soft);
+      padding: 32px 28px;
+      font-size: 14px;
+      text-align: center;
+    }
+
+    .company-card p + p {
+      margin-top: 10px;
+    }
+
+    .company-btn-wrap {
+      margin-top: 24px;
+    }
+
+    /* ===== フッター ===== */
+    footer {
+      background-color: #020617;
+      color: #e5e7eb;
+      padding: 32px 0 20px;
+      margin-top: 48px;
+      font-size: 13px;
+    }
+
+    .footer-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 24px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid #111827;
+    }
+
+    .footer-nav {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .footer-nav a {
+      color: #9ca3af;
+      font-size: 12px;
+    }
+
+    .footer-nav a:hover {
+      color: #e5e7eb;
+    }
+
+    .footer-sns {
+      display: flex;
+      gap: 12px;
+      font-size: 16px;
+    }
+
+    .footer-bottom {
+      padding-top: 16px;
+      font-size: 11px;
+      color: #6b7280;
+    }
+
+    /* ===== レスポンシブ（スマホ用） ===== */
+    @media (max-width: 900px) {
+      nav {
+        display: none; /* シンプルに、スマホではナビを非表示にしておく */
+      }
+
+      .header-inner {
+        justify-content: space-between;
+      }
+
+      .hero {
+        height: 420px;
+      }
+
+      .hero-title {
+        font-size: 26px;
+      }
+
+      .values-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .feature-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .products-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .voices-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .footer-top {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== ヘッダー ===== -->
+  <header>
+    <div class="container header-inner">
+      <div class="logo">豆豆や</div>
+      <nav>
+        <ul>
+          <li><a href="#top">ホーム</a></li>
+          <li><a href="#plan">サブスク</a></li>
+          <li><a href="#values">想い</a></li>
+          <li><a href="#company">会社概要</a></li>
+          <li><a href="#faq">FAQ</a></li>
+          <li><a href="#contact">お問い合わせ</a></li>
+        </ul>
+      </nav>
+      <div class="header-cta">
+        <a href="#plan" class="btn btn-primary">サブスクを申し込む</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== ヒーロー ===== -->
+  <section class="hero" id="top">
+    <div class="container">
+      <div class="hero-inner">
+        <h1 class="hero-title">
+          誠実な一杯を、<br>あなたの暮らしへ。
+        </h1>
+        <p style="margin-bottom:24px; font-size:14px; color:#e5e7eb;">
+          豆豆やは、生産者さんの想いとあなたの毎日をつなぐコーヒーサブスクです。
+          こだわりの豆を、物語と一緒にお届けします。
+        </p>
+        <div class="hero-buttons">
+          <a href="#plan" class="btn btn-primary">サブスクを申し込む</a>
+          <a href="#values" class="btn btn-outline">豆豆やの想いを見る</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 大切にしていること ===== -->
+  <section class="section" id="values">
+    <div class="container">
+      <h2 class="section-title">豆豆やが大切にしていること</h2>
+
+      <div class="values-grid">
+        <div class="values-img-wrapper">
+          <!-- ここも好きな写真URLに変えてOK -->
+          <img src="https://images.pexels.com/photos/1200226/pexels-photo-1200226.jpeg?auto=compress&cs=tinysrgb&w=1600" alt="コーヒー農園の写真">
+        </div>
+
+        <div class="values-items">
+          <div>
+            <h3 class="values-item-title">誠実さ</h3>
+            <p class="values-item-text">
+              豆豆やは、コーヒー豆の原点である生産者さんの顔が見える関係を大切にしています。
+              農園のストーリーや環境への取り組みを伝えながら、一杯のコーヒーを通じて心地よいサイクルを育てます。
+            </p>
+          </div>
+
+          <div>
+            <h3 class="values-item-title">透明性</h3>
+            <p class="values-item-text">
+              どこで育てられたコーヒーなのか、その情報を丁寧にお届けします。
+              仕入れ価格やローストのレシピなどもできるかぎりオープンにし、安心して選んでもらえるようにしています。
+            </p>
+          </div>
+
+          <div>
+            <h3 class="values-item-title">フェアトレード</h3>
+            <p class="values-item-text">
+              生産者の労力に見合った対価を支払えるよう、適正価格での取引を行っています。
+              サブスク代の一部は、現地の生活環境を整えるプロジェクトにも活用されています。
+            </p>
+          </div>
+
+          <div>
+            <a href="#plan" class="btn btn-outline">もっと読む・豆豆やの始まり</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== サブスクの特徴 ===== -->
+  <section class="section feature-bg" id="plan">
+    <div class="container">
+      <h2 class="section-title">豆豆やのサブスクは、ただ届くだけじゃない</h2>
+      <p class="feature-subtitle">
+        毎月のコーヒータイムに、ストーリーと小さな発見をお届けします
+      </p>
+
+      <div class="feature-grid">
+        <div class="feature-card">
+          <div class="badge">☕</div>
+          <h3 class="feature-card-title">毎月焙煎豆が届く</h3>
+          <p>
+            世界各地の個性豊かなスペシャルティコーヒーを一豆一豆選び抜き、
+            焙煎したての状態でポストにお届けします。
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="badge">📮</div>
+          <h3 class="feature-card-title">生産者ストーリーカード付き</h3>
+          <p>
+            コーヒー農園の風景や、その土地ならではのエピソードをカードにして同封。
+            一杯ごとに、遠くの誰かの暮らしを感じていただけます。
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="badge">🎁</div>
+          <h3 class="feature-card-title">初回は計量スプーン付き</h3>
+          <p>
+            初回お届けには、豆豆やオリジナルの計量スプーンをプレゼント。
+            おうちでのコーヒー習慣を、今日から気軽に始められます。
+          </p>
+        </div>
+      </div>
+
+      <div style="text-align:center; margin-top:32px;">
+        <a href="#contact" class="btn btn-primary">プランと料金・サブスクについて</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== コーヒーラインナップ ===== -->
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title">選べる3つのコーヒーライン</h2>
+      <p style="text-align:center; font-size:13px; color:var(--text-sub); margin-bottom:32px;">
+        あなたのライフスタイルにあわせてお選びください
+      </p>
+
+      <div class="products-grid">
+        <!-- プレミアムライン -->
+        <article class="product-card">
+          <img class="product-img"
+               src="https://images.pexels.com/photos/373888/pexels-photo-373888.jpeg?auto=compress&cs=tinysrgb&w=1600"
+               alt="プレミアムコーヒー豆">
+          <div class="product-body">
+            <h3 class="product-title">プレミアムライン</h3>
+            <p>
+              世界中から特別なロットだけを選び抜いたシングルオリジンのコーヒー。
+              果実感あふれる一杯を楽しみたい方におすすめです。
+            </p>
+            <p class="product-price">月々 3,580円〜（税込）</p>
+          </div>
+          <div class="product-footer">
+            <a href="#contact" class="btn btn-outline">詳細を見る</a>
+          </div>
+        </article>
+
+        <!-- スタンダードライン -->
+        <article class="product-card">
+          <img class="product-img"
+               src="https://images.pexels.com/photos/894695/pexels-photo-894695.jpeg?auto=compress&cs=tinysrgb&w=1600"
+               alt="スタンダードコーヒー豆">
+          <div class="product-body">
+            <h3 class="product-title">スタンダードライン</h3>
+            <p>
+              毎朝飲みたくなる、バランスの取れた味わい。
+              ストレートでもカフェオレでも楽しめる万能ブレンドです。
+            </p>
+            <p class="product-price">月々 2,480円〜（税込）</p>
+          </div>
+          <div class="product-footer">
+            <a href="#contact" class="btn btn-outline">詳細を見る</a>
+          </div>
+        </article>
+
+        <!-- もったいない豆（SDGs） -->
+        <article class="product-card">
+          <img class="product-img"
+               src="https://images.pexels.com/photos/1209999/pexels-photo-1209999.jpeg?auto=compress&cs=tinysrgb&w=1600"
+               alt="もったいないコーヒー豆">
+          <div class="product-body">
+            <h3 class="product-title">もったいない豆（SDGs）</h3>
+            <p>
+              形が不揃いなどの理由で市場に出にくいけれど、味わいは確かなコーヒー豆。
+              お得な価格で、食品ロス削減にもつながるプランです。
+            </p>
+            <p class="product-price">月々 1,980円〜（税込）</p>
+          </div>
+          <div class="product-footer">
+            <a href="#contact" class="btn btn-outline">詳細を見る</a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== みなさまの声 ===== -->
+  <section class="section" id="voices">
+    <div class="container">
+      <h2 class="section-title">みなさまの声</h2>
+
+      <div class="voices-grid">
+        <div class="voice-card">
+          <div class="voice-stars">★★★★★</div>
+          <p>
+            毎月届くストーリーカードを読むのが楽しみです。コーヒーだけでなく、
+            農園の方々のことも身近に感じられて、一杯のありがたみが増しました。
+          </p>
+          <div class="voice-name">田中 小春さん</div>
+          <div class="voice-date">2025年10月</div>
+        </div>
+
+        <div class="voice-card">
+          <div class="voice-stars">★★★★★</div>
+          <p>
+            スタンダードラインを愛用しています。豆豆やに出会ってから、
+            家でのコーヒータイムが一日のリセット時間になりました。
+          </p>
+          <div class="voice-name">佐藤 慎二さん</div>
+          <div class="voice-date">2025年9月</div>
+        </div>
+
+        <div class="voice-card">
+          <div class="voice-stars">★★★★☆</div>
+          <p>
+            プレミアムラインの酸味が心地よくて、つい友人にもすすめています。
+            たまに入っているおまけの試飲豆も楽しみです。
+          </p>
+          <div class="voice-name">高橋 美咲さん</div>
+          <div class="voice-date">2025年11月</div>
+        </div>
+
+        <div class="voice-card">
+          <div class="voice-stars">★★★★★</div>
+          <p>
+            もったいない豆プランにしていますが、味は十分おいしいです。
+            ちょっとした社会貢献にもなるのがうれしいポイント。
+          </p>
+          <div class="voice-name">鈴木 亮さん</div>
+          <div class="voice-date">2025年11月</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 会社紹介 ===== -->
+  <section class="section" id="company">
+    <div class="container">
+      <h2 class="section-title">豆豆やはこんな会社です</h2>
+
+      <div class="company-card">
+        <p>
+          私たち豆豆やは、2019年に福岡の小さなロースタリーとして生まれました。
+        </p>
+        <p>
+          「一杯のコーヒーが誰かの暮らしをちょっとよくする」ことを目指し、
+          生産者と飲み手の距離をすこしだけ近づけられるような仕組みづくりを行っています。
+        </p>
+        <p>
+          透明性のある取引と、持続可能なコーヒー文化の実現を目標に、
+          日々焙煎をしています。
+        </p>
+
+        <div class="company-btn-wrap">
+          <a href="#contact" class="btn btn-primary">会社概要を見る</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== フッター ===== -->
+  <footer>
+    <div class="container">
+      <div class="footer-top">
+        <div>
+          <div class="logo" style="font-size:16px;">豆豆や</div>
+          <div class="footer-nav" style="margin-top:12px;">
+            <a href="#top">ホーム</a>
+            <a href="#plan">サブスク</a>
+            <a href="#values">想い</a>
+            <a href="#company">会社概要</a>
+            <a href="#faq" id="faq">FAQ</a>
+            <a href="#contact" id="contact">お問い合わせ</a>
+          </div>
+        </div>
+
+        <div>
+          <div class="footer-sns">
+  <a href="https://www.instagram.com" target="_blank">
+    <i class="fa-brands fa-instagram"></i>
+  </a>
+
+  <a href="https://twitter.com" target="_blank">
+    <i class="fa-brands fa-twitter"></i>
+  </a>
+
+  <a href="https://facebook.com" target="_blank">
+    <i class="fa-brands fa-facebook"></i>
+  </a>
+</div>
+
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>特定商取引法に基づく表示 / プライバシーポリシー</div>
+        <div style="margin-top:4px;">© 2025 豆豆や All rights reserved.</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- 今回はJavaScriptは使っていません。
+       必要になったらこの中に書いていきましょう -->
+  <script>
+  </script>
+</body>
+</html>
