@@ -73,15 +73,33 @@ a {
   background-color: #dd7b20;
 }
 
+/* もっと読むボタン（オレンジバージョン） */
 .btn-outline {
-  background-color: rgba(255, 255, 255, 0.9);
-  border-color: rgba(255, 255, 255, 0.7);
-  color: #111827;
+  display: inline-block;
+  padding: 12px 28px;
+  border-radius: 999px;
+  border: 2px solid var(--main-color); /* オレンジの枠線 */
+  background-color: #fff7ef; /* 薄いオレンジ背景 */
+  color: var(--main-color);  /* 文字カラーもオレンジ */
+  font-weight: 600;
+  transition: 0.3s ease;
 }
 
+/* ホバー時のふわっと効果 */
 .btn-outline:hover {
-  background-color: #fff;
+  background-color: var(--main-color); /* 濃いオレンジに */
+  color: white;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
 }
+
+/* 押した時の表現 */
+.btn-outline:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
 
 .badge {
   display: inline-flex;
